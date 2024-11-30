@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('factory.jpg'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+    flex-direction: column;
+}
+
+.container1{
+    position: relative;
+    width: 400px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 0px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(30px);
+}
+
+.temperature_box{
+    text-align: center;
+    color: rgb(0, 6, 10);
+    font-size: 64px;
+    font-weight: 600;
+    margin: 20px 0 0 0;
+}
+
+.temperature_box span{
+    position: absolute;
+    font-size: 24px;
+    margin-left: 4px;
+}
+
+.temperature_box img{
+    width: 40%;
+}
+
+.container2{
+    position: relative;
+    width: 400px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 30px;
+    backdrop-filter: blur(30px);
+}
+
+.humidity_box{
+    text-align: center;
+    color:rgb(1, 7, 12);
+    font-size: 64px;
+    font-weight: 600;
+    margin: 20px 0 0 0;
+}
+
+.humidity_box span{
+    position: absolute;
+    font-size: 24px;
+    margin-left: 4px;
+}
+
+.humidity_box img{
+    width: 35%;
+}
+
+.humidity_box p{
+    margin: 10px 0 0 0;
+}

@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 100px;
+    justify-items: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('light_of_dawn_by_bisbiswas_deeg7fq.jpg'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+    flex-direction: column;
+}
+
+
+
+h1{
+    color:aliceblue;
+}
+
+.temperature_box{
+    position: relative;
+    width: 400px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 0px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(30px);
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-size: 64px;
+    font-weight: 600;
+    margin: 20px 0 0 0;
+}
+
+.temperature_box span{
+    position: absolute;
+    font-size: 24px;
+    margin-left: 4px;
+}
+
+.temperature_box img{
+    width: 40%;
+    margin: 20px 0 0 0;
+}
+
+.humidity_box{
+    text-align: center;
+    color:rgb(255, 255, 255);
+    font-size: 64px;
+    font-weight: 600;
+    margin: 20px 0 0 0;
+    position: relative;
+    width: 400px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 30px;
+    backdrop-filter: blur(30px);
+}
+
+.humidity_box span{
+    position: absolute;
+    font-size: 24px;
+    margin-left: 4px;
+}
+
+.humidity_box img{
+    width: 35%;
+}
+
+.humidity_box p{
+    margin: 30px 0 0 0;
+}

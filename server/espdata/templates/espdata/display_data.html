@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'espdata/style2.css' %}"> 
+    <title>T&H</title>
+</head>
+<body>
+    <div class="container">
+        <h1> Node 1 </h1>
+        <div class="temperature_box">
+            <img src="{% static 'espdata/temperature_icon.png' %}" alt="Temperature Icon">
+            <p class="temperature">{{ latest_item.temperature }}<span>°C</span></p>
+        </div>
+
+        <div class="humidity_box">
+            <img src="{% static 'espdata/humidity_icon.png' %}" alt="Humidity Icon">
+            <p class="humidity">{{ latest_item.humidity }}<span>%RH</span></p>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1> Node 2 </h1>
+        <div class="temperature_box">
+            <img src="{% static 'espdata/temperature_icon.png' %}" alt="Temperature Icon">
+            <p class="temperature">{{ latest_item.temperature }}<span>°C</span></p>
+        </div>
+
+        <div class="humidity_box">
+            <img src="{% static 'espdata/humidity_icon.png' %}" alt="Humidity Icon">
+            <p class="humidity">{{ latest_item.humidity }}<span>%RH</span></p>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1> Node 3 </h1>
+        <div class="temperature_box">
+            <img src="{% static 'espdata/temperature_icon.png' %}" alt="Temperature Icon">
+            <p class="temperature">{{ latest_item.temperature }}<span>°C</span></p>
+        </div>
+
+        <div class="humidity_box">
+            <img src="{% static 'espdata/humidity_icon.png' %}" alt="Humidity Icon">
+            <p class="humidity">{{ latest_item.humidity }}<span>%RH</span></p>
+        </div>
+    </div>
+</body>
+</html>
