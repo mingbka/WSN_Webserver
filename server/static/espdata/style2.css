@@ -10,16 +10,15 @@
 body{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 450px auto;
-    grid-gap: 50px;
+    grid-template-rows: 450px;
+    grid-gap: 100px;
     justify-items: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url('bg2.jpg'); 
+    background-image: url('light_of_dawn_by_bisbiswas_deeg7fq.jpg'); 
     background-size: cover; 
     background-repeat: no-repeat; 
     background-position: center;
-    background-attachment: fixed;
     flex-direction: column;
 }
 
@@ -97,15 +96,3 @@ h1{
 .timestamp_box p{
     color: aliceblue;
 }
-
-.chart_container {
-    width: 500px;
-    height: 400px;
-    background-color: #ffffff;
-    border-radius: 8px !important;
-    overflow: hidden !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-}
-
-
