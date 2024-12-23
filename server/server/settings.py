@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'django_celery_beat',
-    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -140,13 +138,3 @@ EMAIL_HOST_USER = 'lamtuanduc3003@gmail.com'
 EMAIL_HOST_PASSWORD = 'ratovcoemxtdjgjz'
 DEFAULT_FROM_EMAIL = 'lamtuanduc3003@gmail.com'
 
-# Cấu hình Broker URL (RabbitMQ hoặc Redis)
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-
-# Kết quả task (tùy chọn)
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_RESULT_EXTENDED = True
-
-# Các task tự động nạp
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
