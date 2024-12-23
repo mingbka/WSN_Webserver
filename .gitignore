@@ -1,2 +1,3 @@
-# Bỏ qua môi trường ảo
 webserver/
+server/espdata/tests.py
+server/server/db.sqlite3
