@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-5d38$1v79&ed-ubgs(+_*g$pc&%-*%5l$a+t+b=qe5v(!^mjg(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['wsnweb.pythonanywhere.com', 'localhost']
+ALLOWED_HOSTS = ['wsnnhom30.pythonanywhere.com', '127.0.0.1']
 
 CORS_ORIGIN_ALLOW_ALL = True
 
