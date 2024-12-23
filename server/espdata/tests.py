@@ -1,49 +1,26 @@
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from django.test import TestCase
 from espdata.models import SensorData
 from datetime import datetime
-from django.db.models import Avg, Max, Min
+import pandas as pd
+import os
 
 # Create your tests here.
 date = datetime(2024, 12, 10).date()
 
-report = SensorData.objects.filter(timestamp__date=date).aggregate(
-    max_temp = Max('temperature'),
-    min_temp = Min('temperature'),
-    avg_temp = Avg('temperature'),
-    max_hud = Max('humidity'),
-    min_hud = Min('humidity'),
-    avg_hud = Avg('humidity')
-)
+report = SensorData.objects.filter(timestamp__date=date).values()
 
-def send_email():
-    sender_email = "lamtuanduc3003@gmail.com"
-    password = "ratovcoemxtdjgjz"
-    recipient_email = "mingbka@gmail.com"
+for record in report:
+    for key, value in record.items():
+        if isinstance(value, pd.Timestamp):  # Kiểm tra xem giá trị có phải là datetime không
+            # Loại bỏ múi giờ nếu có
+            record[key] = value.replace(tzinfo=None)
 
-    # Nội dung
-    subject = f"""
-    Báo cáo nhiệt độ độ ẩm ngày {date}
-    """
-    body = f"""
-    Nhiệt độ:
-    - Cao nhất: {report['max_temp']}
-    """
+df = pd.DataFrame(report)
 
-    # Thiết lập email
-    msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = recipient_email
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
+output_dir = os.path.join(os.getcwd(), 'exports')
+os.makedirs(output_dir, exist_ok=True)
 
-    # Kết nối với SMTP server và gửi email
-    try:
-        with smtplib.SMTP('smtp.gmail.com', 587) as server:
-            server.starttls()  # Bắt đầu kết nối an toàn
-            server.login(sender_email, password)  # Đăng nhập
-            server.sendmail(sender_email, recipient_email, msg.as_string())  # Gửi email
-        print("Email đã được gửi thành công!")
-    except Exception as e:
-        print(f"Lỗi khi gửi email: {e}")
+output_file = os.path.join(output_dir, f"data_{date}.xlsx")
+df.to_excel(output_file, index=False)
+
+print(f"File Excel đã được lưu tại: {output_file}")

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from .models import SensorData
@@ -8,6 +8,8 @@ from django.utils.timezone import localtime
 # from channels.layers import get_channel_layer
 from django.db.models import Avg, Max, Min
 from datetime import datetime, timedelta
+import pandas as pd
+import os
 
 # Create your views here.
 @csrf_exempt
@@ -97,16 +99,14 @@ def display_data(request):
 def daily_report(request):
     date = datetime(2024, 12, 10).date()
 
-    report = SensorData.objects.filter(timestamp__date=date).aggregate(
-        max_temp = Max('temperature'),
-        min_temp = Min('temperature'),
-        avg_temp = Avg('temperature'),
-        max_hud = Max('humidity'),
-        min_hud = Min('humidity'),
-        avg_hud = Avg('humidity')
-    )
+    report = SensorData.objects.filter(timestamp__date=date).values()
 
-    return render(request, 'espdata/daily_report.html', {
-        'report': report,
-        'date': date
-    })
+    df = pd.DataFrame(report)
+
+    output_dir = os.path.jion(os.path.dirname(__file__), '..', 'exports')
+    os.makedirs(output_dir, exist_ok=True)
+
+    output_file = os.path.join(output_dir, f"data_{date}.xlsx")
+    df.to_excel(output_file, index=False)
+
+    return HttpResponse(f"File đã được lưu tại {output_file}")
