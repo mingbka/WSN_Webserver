@@ -1,4 +1,4 @@
 webserver/
-server/espdata/tests.py
-server/db.sqlite3
+/server/espdata/tests.py/
+/server/db.sqlite3/
 exports/
