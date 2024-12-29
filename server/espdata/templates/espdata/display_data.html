@@ -7,8 +7,28 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     {% load static %}
     <link rel="stylesheet" href="{% static 'espdata/style2.css' %}"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
     <title>T&H</title>
+    <style>
+        .button {
+            margin: -10px 10px 10px 10px;
+            background-color: #FDD220;
+            color: black;
+            font-weight: bolder;
+            font-size: 1rem;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .button:hover{
+            transform: scale(1.05);
+            background-color: #FFE88A;
+        }
+    </style>
     <script>
         // Dữ liệu truyền từ Django
         const chartData_1 = {{ chart_data_node_1|safe }};
@@ -140,5 +160,42 @@
     <div class="chart_container" id="chart3">
         <script>createChart('chart3', chartData_3);</script>
     </div>
+
+    <button type="button" class="button" data-download="file" data-url="{% url 'daily_report' %}"> 
+        <i class="bi bi-file-earmark-arrow-down-fill"></i>
+        Download Data within a day
+    </button>
+    <script>
+        const downloadButton = document.querySelectorAll("[data-download]")
+
+        downloadButton.forEach(button => {
+            button.addEventListener("click", async () =>{
+                const url = button.getAttribute("data-url")
+                try{
+                    const response = await fetch(url)
+
+                    if (response.status === 404){
+                        alert("No data sent to server within a day")
+                        return
+                    }
+
+                    const blob = await response.blob()
+                    const a = document.createElement("a")
+
+                    a.href=URL.createObjectURL(blob)
+                    a.download = "Temperature_and_Humidity_data_last_day.xlsx";
+                    a.style.display = "none"
+
+                    button.addEventListener("click", () =>{
+                        document.body.appendChild(a)
+                        a.click()
+                    })
+                }catch (error) {
+                    console.error("Lỗi khi tải dữ liệu:", error);
+                    alert("Đã xảy ra lỗi khi tải dữ liệu.");
+                }
+            })
+        })
+    </script>
 </body>
 </html>

@@ -41,51 +41,29 @@ def display_data(request):
     # dữ liệu để vẽ biểu đồ
     now = datetime.now()
     start_date = now - timedelta(days=1)
-    # date = datetime(2024,12,18).date()
+    # date = datetime(2024,12,18).date()  # kiểm thử
 
-    sensor_data_1 = SensorData.objects.filter(
+    sensor_data_dict={}
+    chart_data_dict={}
+
+    for i in range(1,4):
+        sensor_data_dict[f"sensor_data_{i}"] = SensorData.objects.filter(
         timestamp__range=(start_date, now), 
-        node=1
-    ).order_by('timestamp') # sắp xếp dữ liệu theo thứ tự thời gian
+        node=i
+        ).order_by('timestamp') # sắp xếp dữ liệu theo thứ tự thời gian
 
-    sensor_data_2 = SensorData.objects.filter(
-        timestamp__range=(start_date, now), 
-        node=2
-    ).order_by('timestamp')
+        chart_data_dict[f"chart_data_node_{i}"]=[]
 
-    sensor_data_3 = SensorData.objects.filter(
-        timestamp__range=(start_date, now), 
-        node=3
-    ).order_by('timestamp')
-
-    chart_data_node_1 = []
-    chart_data_node_2 = []
-    chart_data_node_3 = []
-
-
-    for data in sensor_data_1:
-        local_timestamp = localtime(data.timestamp).timestamp()
-        chart_data_node_1.append({
-            'time': int(local_timestamp),
-            'temperature': data.temperature,
-            'humidity': data.humidity,
-        })
-
-    for data in sensor_data_2:
-        local_timestamp = localtime(data.timestamp).timestamp()
-        chart_data_node_2.append({
-            'time': int(local_timestamp),
-            'temperature': data.temperature,
-            'humidity': data.humidity,
-        })
-
-    for data in sensor_data_3:
-        local_timestamp = localtime(data.timestamp).timestamp()
-        chart_data_node_3.append({
-            'time': int(local_timestamp),
-            'temperature': data.temperature,
-            'humidity': data.humidity,
-        })
+        for data in sensor_data_dict[f"sensor_data_{i}"]:
+            local_timestamp = localtime(data.timestamp).timestamp()
+            chart_data_dict[f"chart_data_node_{i}"].append({
+                'time': int(local_timestamp),
+                'temperature': data.temperature,
+                'humidity': data.humidity,
+            })
+    chart_data_node_1 = chart_data_dict["chart_data_node_1"]
+    chart_data_node_2 = chart_data_dict["chart_data_node_2"]
+    chart_data_node_3 = chart_data_dict["chart_data_node_3"]
     
     return render(request, 'espdata/display_data.html', {
         'node_1_data': node_1_data,
@@ -97,16 +75,33 @@ def display_data(request):
     })
     
 def daily_report(request):
-    date = datetime(2024, 12, 10).date()
+    end = datetime.now()
+    start = end - timedelta(days=1)
 
-    report = SensorData.objects.filter(timestamp__date=date).values()
+    data = SensorData.objects.filter(timestamp__range=(start, end)).values()
+
+    if not data.exists():
+        return JsonResponse({"message": "Không có dữ liệu trong vòng 1 ngày qua."}, status=404)
+
+    report=[]
+
+    for i, record in enumerate(data, start=1):
+        record.pop('id', None)
+        time = record['timestamp'] + timedelta(hours=7)
+        h_m = time.strftime(' %H:%M ') 
+        new_record = {'ordinal': i, **record, 'timestamp': h_m}
+        report.append(new_record)
 
     df = pd.DataFrame(report)
 
-    output_dir = os.path.jion(os.path.dirname(__file__), '..', 'exports')
-    os.makedirs(output_dir, exist_ok=True)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="data_last_day.xlsx"'
 
-    output_file = os.path.join(output_dir, f"data_{date}.xlsx")
-    df.to_excel(output_file, index=False)
+    # Ghi file Excel vào response
+    with pd.ExcelWriter(response, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Sensor Data')
 
-    return HttpResponse(f"File đã được lưu tại {output_file}")
+    return response
+    
+
+    
