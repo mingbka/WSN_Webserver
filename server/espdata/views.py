@@ -4,9 +4,6 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from .models import SensorData
 from django.utils.timezone import localtime
-# from asgiref.sync import async_to_sync
-# from channels.layers import get_channel_layer
-from django.db.models import Avg, Max, Min
 from datetime import datetime, timedelta
 import pandas as pd
 import os
@@ -81,11 +78,13 @@ def daily_report(request):
     data = SensorData.objects.filter(timestamp__range=(start, end)).values()
 
     if not data.exists():
-        return JsonResponse({"message": "Không có dữ liệu trong vòng 1 ngày qua."}, status=404)
+        return HttpResponse(status=404)
 
     report=[]
 
     for i, record in enumerate(data, start=1):
+        if record.get('node') == 0 or record.get('temperature') == 0 or record.get('humidity') == 0:
+            continue
         record.pop('id', None)
         time = record['timestamp'] + timedelta(hours=7)
         h_m = time.strftime(' %H:%M ') 
