@@ -189,12 +189,13 @@
                     button.addEventListener("click", () =>{
                         document.body.appendChild(a)
                         a.click()
+                        document.body.removeChild(a)
                     })
                 }catch (error) {
                     console.error("Lỗi khi tải dữ liệu:", error);
                     alert("Đã xảy ra lỗi khi tải dữ liệu.");
                 }
-            })
+            }, { once: true })
         })
     </script>
 </body>
